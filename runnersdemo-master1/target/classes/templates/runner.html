@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Runner</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<form th:action="@{/runner/{id}/addlaptime(id=${runner.runnerId})}" method="post">
+    <div class="container">
+        <h2 th:text="${runner.runnerName}"></h2>
+        <hr>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Runner ID:</th>
+                <td th:text="${runner.runnerId}">ID</td>
+                <td></td>
+                <th>Average Pace:</th>
+                <td th:text="${runner.averagePace}"></td>
+            </tr>
+            <tr>
+                <th>Age:</th>
+                <td th:text="${runner.runnerAge}"></td>
+                <td></td>
+                <th>Gender:</th>
+                <td th:text="${runner.runnerGender}"></td>
+            </tr>
+            </thead>
+        </table>
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Average Lap Time:</th>
+                <td th:text="${runner.averagePace}"></td>
+            </tr>
+            <tr>
+                <th>avarageLaptimes:</th>
+                <td th:text="${runner.averagePace}"></td>
+            </tr>
+            <tr>
+                <th>Average Lap Time:</th>
+                <td th:text="${averageLaptime}"></td>
+            </tr>
+            <tr>
+                <td style="width:100%">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Lap Number</th>
+                            <th>race</th>
+                            <th>Distance</th>
+                            <th>Lap Time</th>
+                            <th>race</th>
+                            <th>Date</th>
+                            <th>Lap Time</th>
+                            <th>Runner average pace</th>
+                            <th>Race data</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="laptime : ${runner.getLapTimes()}">
+                            <td th:text="${laptime.lapNumber}"></td>
+                            <td th:text="${laptime.race.raceName}"></td>
+                            <td th:text="${laptime.race.raceDistance}"></td>
+                            <td th:text="${laptime.runner.timeSeconds} + ' seconds'"></td>
+                            <td th:text="${laptime.runner.averagePace} + ' seconds'"></td>
+                            <td th:text="${laptime.race.raceDate}"></td>
+                            <td th:text="${laptime.runner.getAveragePace()}"></td>
+                            <td th:text="${runner.getAveragePace()}"></td>
+
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/runner/{id}/addlaptime(id=${runner.runnerId})}" class="btn btn-primary">Competition</a>
+    </div>
+</form>
+
+<div class="container">
+    <a href="/index.html" class="btn btn-primary">Back to Home Page</a>
+    <a href="/addRunnerForm" class="btn btn-primary">add to runners</a>
+    <a href="/runners" class="btn btn-primary">All Runners</a>
+</div>

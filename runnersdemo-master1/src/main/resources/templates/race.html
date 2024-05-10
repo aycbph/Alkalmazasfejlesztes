@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Race data</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<form th:action="@{/racer/{id}/race(id=${race.raceId})}" method="post">
+    <div class="container">
+        <h2 th:text="${race.raceName}"></h2>
+        <hr>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Race ID:</th>
+                <td th:text="${race.raceId}"></td>
+                <td></td>
+                <td></td>
+                <th>Race Organizer:</th>
+                <td th:text="${race.raceOrganizer}"></td>
+            </tr>
+            <tr>
+                <th>Distance:</th>
+                <td th:text="${race.raceDistance}"></td>
+                <td></td>
+                <td></td>
+                <th>Date:</th>
+                <td th:text="${race.raceDate}"></td>
+            </tr>
+            </thead>
+        </table>
+
+        <h2>Race Runners</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Lap number</th>
+                <th>Race date</th>
+                <th>Race Name</th>
+                <th>Race Runner</th>
+                <th>Race Distance</th>
+                <th>Race Laptime</th>
+                <th>Race calculate Average Laptime</th>
+                <th>gdfgfsgfsg</th>
+                <th>gdfgfswwww</th>
+
+
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Loop through the runners of the selected race and display them -->
+            <tr th:each="runner : ${race.runners}">
+                <td th:text="${runnerStat.count}"></td>
+                <td th:text="${race.raceDate}"></td>
+                <td th:text="${race.raceName}"></td>
+                <td th:text="${runner.runnerName}"></td>
+                <td th:text="${race.raceDistance}"></td>
+                <td th:text="${race.lapTimes}"</td>
+                <td th:text="${runner.averagePace}"></td>
+                <td th:text="${averageLaptime.longValue()}"></td>
+                <td th:text="${runnerStat.count}"></td>
+
+                <td>
+                    <a th:href="@{/runner/{id}(id=${runner.runnerId})}" class="btn btn-primary">Runner Data</a>
+                </td>
+            </tr>
+</form>
+</tbody>
+</table>
+<tr>
+    <a href="/addRaceToRunnerForm" class="btn btn-primary">add to runners</a>
+    <a href="/runners" class="btn btn-primary">View Runners</a>
+    <a href="/index.html" class="btn btn-primary">Home</a>
+</tr>
+</div>
+
+</body>
+</html>

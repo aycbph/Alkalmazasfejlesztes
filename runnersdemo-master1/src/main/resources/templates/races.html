@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Races</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>All Races</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Race date</th>
+            <th>Organizer</th>
+            <th>Distance</th>
+            <th>Data</th> <!-- Ez az új oszlop a "View" gomb miatt -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="race : ${races}">
+            <td th:text="${race.raceId}">ID</td>
+            <td th:text="${race.raceName}"></td>
+            <td th:text="${race.raceDate}"></td>
+            <td th:text="${race.raceOrganizer}"></td>
+            <td>
+                <span th:if="${race.raceDistance != null}" th:text="${race.raceDistance} + ' km'"></span>
+                <span th:if="${race.raceDistance == null}" th:text=" '0.0 km'"></span>
+            </td>
+            <td>
+                <a th:href="@{/race/{id}(id=${race.getRaceId()})}" class="btn btn-primary">Race Data</a>
+            </td>
+            <td>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container">
+    <a href="/index.html" class="btn btn-primary">back to home page</a>
+</div>
+</body>
+</html>

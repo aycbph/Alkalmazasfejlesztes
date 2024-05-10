@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Runner</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Add New Runner</h1>
+    <form action="/addRunner" method="post">
+        <div class="form-group">
+            <label for="runnerName">Runner Name:</label>
+            <input type="text" id="runnerName" name="runnerName" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="averagePace">Average Pace:</label>
+            <input type="number" id="averagePace" name="avaragePace" class="form-control" required min="80" max="200">
+        </div>
+        <div class="form-group">
+            <label for="runnerAge">Runner Age:</label>
+            <input type="number" id="runnerAge" name="runnerAge" class="form-control" required min="18" max="50">
+        </div>
+        <div class="form-group">
+            <label for="runnerGender">Runner Gender:</label>
+            <select id="runnerGender" name="runnerGender" class="form-control" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Runner</button>
+    </form>
+
+</div>
+<div class="container">
+    <a href="/index.html" class="btn btn-secondary">Back to Home Page</a>
+</div>
+</body>
+</html>
