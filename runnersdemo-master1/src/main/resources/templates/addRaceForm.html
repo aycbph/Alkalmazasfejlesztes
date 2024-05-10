@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Runner</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Add New Race</h1>
+    <form action="/addRace" method="post">
+        <div class="form-group">
+            <label for="raceName">Race Name:</label>
+            <input type="text" id="raceName" name="raceName" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="raceDistance">Distance:</label>
+            <input type="number" id="raceDistance" name="raceDistance" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="raceDate">Date:</label>
+            <input type="text" id="raceDate" name="raceDate" class="form-control" required pattern="\d{4}-\d{2}-\d{2}" title="Please enter date in YYYY-MM-DD format">
+        </div>
+        <div class="form-group">
+            <label for="raceOrganizer">Organizer:</label>
+            <input type="text" id="raceOrganizer" name="raceOrganizer" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Race</button>
+    </form>
+</div>
+<div class="container">
+    <a href="/index.html" class="btn btn-secondary">Back to Home Page</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Runner to Race</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<body>
+<h2></h2>
+<div class="container">
+    <h1>Add Runner to Race</h1>
+    <form action="/addRaceRunner" method="post">
+        <div class="form-group">
+            <label for="raceId">Select Race:</label><br>
+            <select id="raceId" name="raceId" class="form-control">
+                <option value="">-- Select Race --</option>
+                <option th:each="race : ${races}" th:value="${race.getRaceId()}" th:text="${race.getRaceName()}"></option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="runnerId">Select Runner:</label><br>
+            <select id="runnerId" name="runnerId" class="form-control">
+                <option value="">-- Select Runner --</option>
+                <option th:each="runner : ${runners}" th:value="${runner.getRunnerId()}" th:text="${runner.getRunnerName()}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Race to Runner</button>
+    </form>
+</div>
+<div class="container">
+    <a href="/index.html" class="btn btn-secondary">Back to Home Page</a>
+</div>
+</body>
+</html>

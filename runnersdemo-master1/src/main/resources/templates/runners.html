@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Runners</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>All Runners</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Average Pace</th>
+            <th>Average Laptime</th>
+            <th>Laptime</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="runner : ${runners}">
+            <td th:text="${runner.runnerId}">ID</td>
+            <td th:text="${runner.runnerName}"></td>
+            <td th:text="${runner.averagePace}"></td>
+            <td th:text="${runner.getAveragePace()}"></td>
+
+
+            <td>
+                <span th:if="${runner.lapTimes != null and runner.lapTimes.size() > 0}" th:text="${runner.lapTimes + ' seconds'}"></span>
+                <span th:if="${runner.lapTimes == null or runner.lapTimes.size() == 0}" th:text="'0 seconds'"></span>
+            </td>
+            <td>
+                <a th:href="@{/runner/{id}(id=${runner.runnerId})}" class="btn btn-primary">Runner Data</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container">
+    <a href="/index.html" class="btn btn-primary">back to home page</a>
+</div>
+</body>
+</html>

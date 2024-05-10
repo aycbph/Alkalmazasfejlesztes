@@ -1,0 +1,24 @@
+<!-- runners.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runners and Races</title>
+</head>
+<body>
+<h1>Runners</h1>
+<ul>
+    <th:block th:each="runner : ${runners}">
+        <li th:text="${runner.runnerName}"></li>
+    </th:block>
+</ul>
+
+<h1>Races</h1>
+<ul>
+    <th:block th:each="race : ${races}">
+        <li th:text="${race.raceName}"></li>
+    </th:block>
+</ul>
+</body>
+</html>
