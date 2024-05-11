@@ -32,30 +32,17 @@ public class LapTimeEntity {
     Random random = new Random();
     int lapTimeValue = ThreadLocalRandom.current().nextInt(80, 201); // Generate random lap time
 
-    public LapTimeEntity(RunnerEntity runner, RaceEntity race, int lapNumber, int timeSecond) {
+    public LapTimeEntity(RunnerEntity runner, RaceEntity race, int lapNumber, int timeSecond, int lapTimeValue) {
         this.runner = runner;
         this.race = race;
         this.lapNumber = lapNumber;
         this.timeSecond = timeSecond;
-        //this.lapTimeValue = lapTimeValue;
-    }
-
-    public LapTimeEntity(RunnerEntity runner, int lapTimeValue) {
-        this.runner = runner;
         this.lapTimeValue = lapTimeValue;
 
     }
 
 
-    // Getterek és setterek
-
-
     public LapTimeEntity() {}
-
-    public LapTimeEntity(RunnerEntity runner, RaceEntity race, int i, int lapTimeValue, long averagePace, int lapTimeValue1) {
-        this.runner = runner;
-        this.race = race;
-    }
 
 
     public Long getId() {
@@ -103,12 +90,6 @@ public class LapTimeEntity {
 
     public Long getId(RunnerEntity race) {return getId(race);}
 
-    public void setRaceId(Long raceId) {
-        this.setRace(race);
-    }
-    public void setRunnerId(Long runnerId) {
-        this.setRunner(runner);
-    }
     public static class LapTimeRequest {
         private int lapTimeSeconds;
 

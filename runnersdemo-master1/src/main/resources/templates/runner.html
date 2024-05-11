@@ -29,11 +29,11 @@
             </thead>
         </table>
 
-        <table class="table">
+        <table class="table table-striped">
             <tbody>
             <tr>
-                <th>Average Lap Time:</th>
-                <td th:text="${runner.averagePace}"></td>
+                <th>Get Timeseconds:</th>
+                <td th:text="${runner.getTimeSeconds()}"></td>
             </tr>
             <tr>
                 <th>avarageLaptimes:</th>
@@ -41,21 +41,20 @@
             </tr>
             <tr>
                 <th>Average Lap Time:</th>
-                <td th:text="${averageLaptime}"></td>
+                <td th:text="${averageLaptime} + ' seconds'"></td>
             </tr>
             <tr>
                 <td style="width:100%">
-                    <table class="table">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>Lap Number</th>
                             <th>race</th>
                             <th>Distance</th>
-                            <th>Lap Time</th>
-                            <th>race</th>
+                            <th>Race</th>
                             <th>Date</th>
                             <th>Lap Time</th>
-                            <th>Runner average pace</th>
+
                             <th>Race data</th>
                         </tr>
                         </thead>
@@ -64,14 +63,16 @@
                             <td th:text="${laptime.lapNumber}"></td>
                             <td th:text="${laptime.race.raceName}"></td>
                             <td th:text="${laptime.race.raceDistance}"></td>
-                            <td th:text="${laptime.runner.timeSeconds} + ' seconds'"></td>
-                            <td th:text="${laptime.runner.averagePace} + ' seconds'"></td>
+                            <td th:text="${laptime.race.raceName}"></td>
                             <td th:text="${laptime.race.raceDate}"></td>
-                            <td th:text="${laptime.runner.getAveragePace()}"></td>
-                            <td th:text="${runner.getAveragePace()}"></td>
+                            <td th:text="${laptime.timeSecond} + ' seconds'"></td>
 
 
+                            <td>
+                                <a th:href="@{/race/{id}(id=${laptime.race.getRaceId()})}" class="btn btn-primary">Race Data</a>
+                            </td>
                         </tr>
+
 
                         </tbody>
                     </table>
@@ -79,7 +80,6 @@
             </tr>
             </tbody>
         </table>
-        <a th:href="@{/runner/{id}/addlaptime(id=${runner.runnerId})}" class="btn btn-primary">Competition</a>
     </div>
 </form>
 

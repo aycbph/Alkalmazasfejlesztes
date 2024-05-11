@@ -40,10 +40,10 @@
                 <th>Race Name</th>
                 <th>Race Runner</th>
                 <th>Race Distance</th>
-                <th>Race Laptime</th>
-                <th>Race calculate Average Laptime</th>
-                <th>gdfgfsgfsg</th>
-                <th>gdfgfswwww</th>
+                <th>Organizer</th>
+                <th>Calculate Average</th>
+                <th>Runtime</th>
+
 
 
                 <th>Action</th>
@@ -51,23 +51,31 @@
             </thead>
             <tbody>
             <!-- Loop through the runners of the selected race and display them -->
-            <tr th:each="runner : ${race.runners}">
-                <td th:text="${runnerStat.count}"></td>
+            <tr th:each="laptime : ${race.getLapTimes()}">
+                <td th:text="${laptime.lapNumber}"></td>
                 <td th:text="${race.raceDate}"></td>
                 <td th:text="${race.raceName}"></td>
-                <td th:text="${runner.runnerName}"></td>
+                <td th:text="${laptime.runner}"></td>
                 <td th:text="${race.raceDistance}"></td>
-                <td th:text="${race.lapTimes}"</td>
-                <td th:text="${runner.averagePace}"></td>
-                <td th:text="${averageLaptime.longValue()}"></td>
-                <td th:text="${runnerStat.count}"></td>
+                <td th:text="${race.raceOrganizer}"</td>
+                <td th:text="${averageLaptime} + ' seconds'"></td>
+                <td th:text="${laptime.getTimeSecond()} + ' seconds'"></td>
+                <td th:text="${laptime.timeSecond} + ' seconds'"></td>
+                <td th:text="${laptime.getLapNumber()} + ' seconds'"></td>
+                <td th:text="${laptime.race.getAverageLaptime()} + ' seconds'"></td>
+                <td th:text="${laptime.race.averageLaptime} + ' seconds'"></td>
+                <td th:text="${laptime.timeSecond} + ' seconds'"></td>
 
                 <td>
-                    <a th:href="@{/runner/{id}(id=${runner.runnerId})}" class="btn btn-primary">Runner Data</a>
+                    <a th:href="@{/runner/{id}(id=${id})}" class="btn btn-primary">Runner Data</a>
                 </td>
             </tr>
-</form>
+
 </tbody>
+            <tbody>
+
+
+            </tbody>
 </table>
 <tr>
     <a href="/addRaceToRunnerForm" class="btn btn-primary">add to runners</a>

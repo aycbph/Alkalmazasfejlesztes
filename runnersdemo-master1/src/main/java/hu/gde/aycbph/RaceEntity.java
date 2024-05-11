@@ -32,14 +32,17 @@ public class RaceEntity {
     @ManyToMany(mappedBy = "races", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<RunnerEntity> runners = new ArrayList<>();
 
+    @Column(name = "average_laptime")
+    private double averageLaptime;
+
     public void addRunner(RunnerEntity runner) {
         runners.add(runner);
-        runner.getRaces().add(this); // Beállítjuk a versenyt a futóhoz
+        runner.getRaces().add(this);
     }
 
     public void addLapTime(LapTimeEntity lapTime) {
         lapTimes.add(lapTime);
-        lapTime.setRace(this); // Beállítjuk a laptidőhöz a versenyt
+        lapTime.setRace(this);
     }
 
     // Getterek és setterek
@@ -100,6 +103,14 @@ public class RaceEntity {
 
     public String getRaceDate() {
         return raceDate;
+    }
+
+    public double getAverageLaptime() {
+        return averageLaptime;
+    }
+
+    public void setAverageLaptime(double averageLaptime) {
+        this.averageLaptime = averageLaptime;
     }
 }
 

@@ -46,10 +46,10 @@ public class RaceRunnersController {
         RunnerEntity runner = runnerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Runner not found"));
 
-        // Set the lap time's runner
+
         lapTime.setRunner(runner);
 
-        // Set the lap time's race
+
         RaceEntity race = lapTime.getRace();
         System.out.println("RRC addLapTime");
         if (race == null) {

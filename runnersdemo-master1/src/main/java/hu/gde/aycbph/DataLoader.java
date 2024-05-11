@@ -82,7 +82,7 @@ public class DataLoader implements CommandLineRunner {
 
 
         runner1.getRaces().add(race1);
-        race1.getRunners().add(runner1);
+//        race1.getRunners().add(runner1);
 
         raceRunnersService.generateLapTimeForRunnerAndRace(runner1, race1);
 

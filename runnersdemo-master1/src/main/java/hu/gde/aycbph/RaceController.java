@@ -97,7 +97,7 @@ public class RaceController {
             model.addAttribute("averageLaptime", averageLaptime);
             return "race";
         } else {
-            // handle error when race is not found
+
             return "error";
         }
     }
@@ -106,7 +106,7 @@ public class RaceController {
         System.out.println("RaceC addR");
         RaceEntity race = raceRepository.findById(id).orElse(null);
         if (race != null) {
-            // Add logic to add the runner to the race
+
             race.addRunner(runner);
             raceRepository.save(race);
             return ResponseEntity.ok().build();

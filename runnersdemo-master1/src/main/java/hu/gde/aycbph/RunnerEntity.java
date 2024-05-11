@@ -16,16 +16,16 @@ public class RunnerEntity {
     @Column(name = "runner_name", nullable = false)
     private String runnerName;
 
-    @Column(name = "runner_gender", nullable = false) // Added variable and annotation
+    @Column(name = "runner_gender", nullable = false)
     private String runnerGender;
 
-    @Column(name = "runner_age", nullable = false) // Added variable and annotation
+    @Column(name = "runner_age", nullable = false)
     private int runnerAge;
 
-    @Column(name = "average_pace", nullable = false) // Added variable and annotation
+    @Column(name = "average_pace", nullable = false)
     private long averagePace;
 
-    @Column(name = "timeseconds", nullable = false) // Added variable and annotation
+    @Column(name = "timeseconds", nullable = false)
     private int timeSeconds;
 
     @ManyToMany
@@ -40,17 +40,6 @@ public class RunnerEntity {
     private List<LapTimeEntity> lapTimes = new ArrayList<>();
 
 
-    public void addLapTimeRunnerRace(LapTimeEntity lapTime, long averagePace, RunnerEntity runner, RaceEntity race) {
-        lapTimes.add(lapTime);
-        lapTime.setRunner(this); // Set runner for lap time
-        lapTime.setRace(race); // Set race for lap time
-    }
-    public void addLapTimeToRunner(LapTimeEntity lapTime) {
-        lapTimes.add(lapTime);
-        lapTime.setRunner(this); // Set runner for lap time
-        lapTime.setRunner(lapTime.getRunner()); // Set race for lap time
-
-    }
     public void addLapTime(LapTimeEntity lapTime, int averagePace, RunnerEntity runner, RaceEntity race) {
         // Assuming lapTimes is a list in RunnerEntity
         lapTimes.add(lapTime);
@@ -68,9 +57,6 @@ public class RunnerEntity {
     }
 
 
-    public void setLapTimes(List<LapTimeEntity> lapTimes) {
-        this.lapTimes = lapTimes;
-    }
 
 
     // Getterek és setterek
@@ -79,8 +65,6 @@ public class RunnerEntity {
     public List<RaceEntity> getRaces() {
         return races;
     }
-
-
 
 
     public Long getRunnerId() {
@@ -120,16 +104,11 @@ public class RunnerEntity {
         this.averagePace = averagePace;
     }
 
-    public void addLapTime(LapTimeEntity lapTime) {
-    }
 
     public int getTimeSeconds() {
         return timeSeconds;
     }
 
-    public void setTimeSeconds(int timeSeconds) {
-        this.timeSeconds = timeSeconds;
-    }
 
 
 }

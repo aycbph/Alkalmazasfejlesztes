@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class RaceRunnersService {
@@ -15,6 +16,7 @@ public class RaceRunnersService {
     private final RunnerService runnerService;
     private final RaceRepository raceRepository;
 
+
     @Autowired
     public RaceRunnersService(RunnerRepository runnerRepository, RaceRepository raceRepository, RunnerService runnerService) {
         this.runnerRepository = runnerRepository;
@@ -22,6 +24,8 @@ public class RaceRunnersService {
         this.runnerService = runnerService;
     }
 
+    int minLapTimeValue = 180;
+    int maxLapTimeValue = 800;
 
 
     @Transactional
@@ -57,75 +61,53 @@ public class RaceRunnersService {
     }
 
 
-    public void addRunner(Long raceId, Long runnerId) throws ChangeSetPersister.NotFoundException {
-        RaceEntity race = raceRepository.findById(raceId)
-                .orElseThrow(() -> new RuntimeException("Race not found"));
-
-        RunnerEntity runner = runnerRepository.findById(runnerId)
-                .orElseThrow(() -> new RuntimeException("Runner not found"));
-
-        getAverageLaptime(runnerId);
-        getAverageLaptime(raceId);
-        addLapTimeToRunner(runner.getRunnerId());
-
-        race.getRunners().add(runner);
-        raceRepository.save(race);
-
-        runner.getRaces().add(race);
-        runnerRepository.save(runner);
-
-        System.out.println("RRS addRnunner " + runner + " race: " + race + " average: " + getAverageLaptime(runnerId));
-
-
-    }
-    @Transactional
-    public void addRunnerToRace(Long raceId, Long runnerId) throws ChangeSetPersister.NotFoundException {
-        RaceEntity race = raceRepository.findById(raceId)
-                .orElseThrow(() -> new RuntimeException("Race not found"));
-
-        RunnerEntity runner = runnerRepository.findById(runnerId)
-                .orElseThrow(() -> new RuntimeException("Runner not found"));
-
-        System.out.println("RRS addRunnerToRace");
-
-
-
-        race.getRunners().add(runner);
-        raceRepository.save(race);
-
-        runner.getRaces().add(race);
-        runnerRepository.save(runner);
-
-        generateLapTimeForRunnerAndRace(runner, race);
-
-        System.out.println("RRS addRunnerToRace");
-
-    }
-
     @Transactional
     public void generateLapTimeForRunnerAndRace(RunnerEntity runner, RaceEntity race) throws ChangeSetPersister.NotFoundException {
-        Random random = new Random();
-        double result = random.nextInt(800) + 350;
-        int timeSeconds = random.nextInt(800) + 350;
 
-        // Get the last lapNumber of the runner
-        int lastLapNumber = runner.getLapTimes().isEmpty() ? 0 : runner.getLapTimes().get(runner.getLapTimes().size() - 1).getLapNumber();
+        double result = ThreadLocalRandom.current().nextInt(minLapTimeValue, maxLapTimeValue + 1);
+        int timeSeconds = ThreadLocalRandom.current().nextInt(minLapTimeValue, maxLapTimeValue + 1);
+        int lapTimeValue = ThreadLocalRandom.current().nextInt(minLapTimeValue, maxLapTimeValue + 1);
 
-        LapTimeEntity lapTime = new LapTimeEntity();
+
+        int lastLapNumber;
+        lastLapNumber = runner.getLapTimes().isEmpty() ? 0 : runner.getLapTimes().get(runner.getLapTimes().size() - 1).getLapNumber();
+
+        LapTimeEntity lapTime = new LapTimeEntity(runner, race, lastLapNumber + 1, timeSeconds, lapTimeValue);
         lapTime.setLapNumber(lastLapNumber + 1);
         lapTime.setTimeSecond(timeSeconds);
         lapTime.setRunner(runner);
         lapTime.setRace(race);
 
 
-        int averagePace = random.nextInt(800) + 190; // generált avaragPace
-        runner.setAveragePace(averagePace);
+        if (runner.getLapTimes().isEmpty()) {
+            int averagePace = ThreadLocalRandom.current().nextInt(minLapTimeValue, maxLapTimeValue + 1);
+            runner.setAveragePace(averagePace);
+        }
+
+        double averageLaptime = calculateAverageRunningTime(runner.getRunnerId()); // Számold újra az átlag időt
+        double averageTime = calculateAverageRunningTime(runner.getRunnerId());
+      System.out.println("Átlagos idő: " + averageTime + " másodperc");
+
+
+
+
+        race.setAverageLaptime(averageLaptime); // Frissítsd az átlag időt a versenyhez
+        System.out.println("Átlagos idő: " + averageLaptime + " másodperc");
 
 
         runner.getLapTimes().add(lapTime);
         lapTime.setRunner(runner);
         lapTime.setRace(race);
         runnerRepository.save(runner);
+
+        raceRepository.save(race);
+
+        runner.getRaces().forEach(r -> r.getLapTimes().add(lapTime));
+        try {
+            calculateAverageRunningTime(runner.getRunnerId());
+        } catch (ChangeSetPersister.NotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         System.out.println("average: " + runner.getAveragePace());
         System.out.println("LapTime: " + lapTime.getRunner());
@@ -134,18 +116,6 @@ public class RaceRunnersService {
     }
 
 
-
-    @Transactional
-    public void addLapTime(LapTimeEntity lapTime, int averagePace, RunnerEntity runner, RaceEntity race) throws ChangeSetPersister.NotFoundException {
-        runner.getLapTimes().add(lapTime);
-        lapTime.setRunner(runner);
-        lapTime.setRace(race);
-        lapTime.setTimeSecond(averagePace);
-        System.out.println("RRS addLapTime");
-
-        runner.setAveragePace(averagePace);
-
-    }
 
 
     @Transactional
@@ -168,19 +138,6 @@ public class RaceRunnersService {
         return result;
     }
 
-
-    @Transactional
-    public void addLapTimeToRunner(Long runnerId) throws ChangeSetPersister.NotFoundException {
-        RunnerEntity runner = runnerRepository.findById(runnerId)
-                .orElseThrow(() -> new RuntimeException("Runner not found"));
-
-        System.out.println("RaceRunnerS addLapTimeToRunner");
-        List<RaceEntity> races = runner.getRaces();
-        for (RaceEntity race : races) {
-            generateLapTimeForRunnerAndRace(runner, race);
-        }
-        runnerRepository.save(runner);
-    }
 }
 
 

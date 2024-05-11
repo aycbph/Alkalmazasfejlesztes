@@ -22,6 +22,7 @@ public class RaceResultEntity {
     @Column(name = "position")
     private int position;
 
+    // Konstruktorok, getterek és setterek
 
     public RaceResultEntity() {
     }
@@ -31,8 +32,6 @@ public class RaceResultEntity {
         this.runner = runner;
         this.position = position;
     }
-
-    // Getters and setters
 
     public Long getResultId() {
         return resultId;
@@ -65,5 +64,4 @@ public class RaceResultEntity {
     public void setPosition(int position) {
         this.position = position;
     }
-
 }
