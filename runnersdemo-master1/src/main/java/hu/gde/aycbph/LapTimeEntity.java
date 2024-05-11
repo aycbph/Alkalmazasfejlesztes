@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
+//ez a jó
 @Entity
 @Table(name = "laptimes")
 public class LapTimeEntity {
