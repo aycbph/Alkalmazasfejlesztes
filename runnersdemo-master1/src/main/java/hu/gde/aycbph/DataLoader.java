@@ -1,7 +1,10 @@
 package hu.gde.aycbph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
 
 
 @Component
@@ -19,6 +22,7 @@ public class DataLoader implements CommandLineRunner {
         this.lapTimeRepository = lapTimeRepository;
         this.raceRunnersService = raceRunnersService;
     }
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -64,46 +68,68 @@ public class DataLoader implements CommandLineRunner {
         runnerRepository.save(runner3);
         System.out.println("R3" + runner3);
 
+        RunnerEntity runner4 = new RunnerEntity();
+        runner4.setRunnerName("Halmos Zoltán");
+        runner4.setAveragePace(190);
+        runner4.setRunnerAge(22);
+        runner4.setRunnerGender("male");
+        runnerRepository.save(runner4);
+        System.out.println("R4" + runner4);
 
-        // Ellenőrizze, hogy a runnerek adatbázisba kerültek-e, és írja ki a konzolra
-        if (runnerRepository.count() > 0) {
-            System.out.println("A runnerek adatbázisba kerültek.");
-        } else {
-            System.out.println("Nem sikerült a runnerek adatbázisba mentése.");
-        }
+        RunnerEntity runner5 = new RunnerEntity();
+        runner5.setRunnerName("Halmos Péter");
+        runner5.setAveragePace(195);
+        runner5.setRunnerAge(28);
+        runner5.setRunnerGender("male");
+        runnerRepository.save(runner5);
+        System.out.println("R5" + runner5);
 
-        // Ellenőrizze, hogy a runnerek adatbázisba kerültek-e, és írja ki a konzolra
-        if (raceRepository.count() > 0) {
-            System.out.println("A racek adatbázisba kerültek.");
-        } else {
-            System.out.println("Nem sikerült a racek adatbázisba mentése.");
-        }
-
-
-
-        runner1.getRaces().add(race1);
-//        race1.getRunners().add(runner1);
-
-        raceRunnersService.generateLapTimeForRunnerAndRace(runner1, race1);
+        RunnerEntity runner6 = new RunnerEntity();
+        runner6.setRunnerName("Hidvégi Ármin");
+        runner6.setAveragePace(198);
+        runner6.setRunnerAge(27);
+        runner6.setRunnerGender("male");
+        runnerRepository.save(runner6);
+        System.out.println("R6" + runner6);
 
 
+        List<RunnerEntity> runners = runnerRepository.findAll();
+        List<RaceEntity> races = raceRepository.findAll();
 
-                System.out.println("Runner22 " + runner1 + " hozzárendelve a versenyhez " + runner1.getRaces() + ":");
-                System.out.println("RaceGetRuner " + race1.getRunners() + " hozzárendelve a versenyhez " + race1 + ":");
-                for (LapTimeEntity laptime : runner1.getLapTimes()) {
-                    System.out.println("Laptime1: " + laptime);
+
+
+        Map<Long, List<LapTimeEntity>> lapTimesByRace2 = new HashMap<>();
+
+
+        if (race2 != null) {
+
+            List<LapTimeEntity> lapTimesForRace2 = new ArrayList<>();
+            for (RunnerEntity runner : runners) {
+                LapTimeEntity lapTime = raceRunnersService.generateLapTimeForRunnerAndRace(runner, race2);
+
+                if (lapTime != null && race2.getRunners().contains(runner)) {
+                    lapTimesForRace2.add(lapTime);
                 }
-//            }
+            }
+            lapTimesByRace2.put(race2.getRaceId(), lapTimesForRace2);
 
 
-            if (raceRepository.count() > 0) {
-                System.out.println("A futó hozzárendelésre került a versenyhez.");
-            } else {
-                System.out.println("Nem sikerült a futó hozzárendelése a versenyhez.");
+            List<LapTimeEntity> lapTimes = lapTimesByRace2.get(race2.getRaceId());
+            if (lapTimes != null) {
+                for (RunnerEntity runner : race2.getRunners()) {
+                    if (!lapTimes.isEmpty()) {
+                        LapTimeEntity lapTime = lapTimes.remove(0);
+                        lapTime.setRace(race2);
+                        lapTime.setRunner(runner);
+                        runner.getLapTimes().add(lapTime);
+                    }
+                }
             }
 
-            // Ellenőrizzük a mentett adatokat
-            System.out.println("A futók és a laptimes-ek sikeresen hozzá lettek adva a versenyekhez.");
+            raceRunnersService.generateLapTimeForRunnerAndRace(runner1, race1);
+            raceRunnersService.generateLapTimeForRunnerAndRace(runner2, race1);
 
         }
     }
+}
+

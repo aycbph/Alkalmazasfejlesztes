@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -55,14 +54,17 @@ public class RaceRunnersService {
 
     @Transactional
     public void addRunner(RunnerEntity runner) {
-
         System.out.println("RRS addR");
-        runnerRepository.save(runner);
+        RaceEntity race = runner.getRaces().get(0);
+        if (!race.getRunners().contains(runner)) {
+            race.getRunners().add(runner);
+            raceRepository.save(race);
+        }
     }
 
 
     @Transactional
-    public void generateLapTimeForRunnerAndRace(RunnerEntity runner, RaceEntity race) throws ChangeSetPersister.NotFoundException {
+    public LapTimeEntity generateLapTimeForRunnerAndRace(RunnerEntity runner, RaceEntity race) throws ChangeSetPersister.NotFoundException {
 
         double result = ThreadLocalRandom.current().nextInt(minLapTimeValue, maxLapTimeValue + 1);
         int timeSeconds = ThreadLocalRandom.current().nextInt(minLapTimeValue, maxLapTimeValue + 1);
@@ -84,14 +86,14 @@ public class RaceRunnersService {
             runner.setAveragePace(averagePace);
         }
 
-        double averageLaptime = calculateAverageRunningTime(runner.getRunnerId()); // Számold újra az átlag időt
+        double averageLaptime = calculateAverageRunningTime(runner.getRunnerId());
         double averageTime = calculateAverageRunningTime(runner.getRunnerId());
       System.out.println("Átlagos idő: " + averageTime + " másodperc");
 
 
 
 
-        race.setAverageLaptime(averageLaptime); // Frissítsd az átlag időt a versenyhez
+        race.setAverageLaptime(averageLaptime);
         System.out.println("Átlagos idő: " + averageLaptime + " másodperc");
 
 
@@ -113,6 +115,7 @@ public class RaceRunnersService {
         System.out.println("LapTime: " + lapTime.getRunner());
         System.out.println("timesecond  laptimeValue: " + lapTime.lapTimeValue);
         System.out.println("timesecond  laptimegetTimeSec: " + lapTime.getTimeSecond());
+        return lapTime;
     }
 
 
@@ -137,6 +140,7 @@ public class RaceRunnersService {
 
         return result;
     }
+
 
 }
 

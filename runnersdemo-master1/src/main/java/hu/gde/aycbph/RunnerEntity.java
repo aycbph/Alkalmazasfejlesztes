@@ -105,10 +105,7 @@ public class RunnerEntity {
     }
 
 
-    public int getTimeSeconds() {
-        return timeSeconds;
+    public String getRaceId() {
+        return null;
     }
-
-
-
 }

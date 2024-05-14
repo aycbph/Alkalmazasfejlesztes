@@ -29,8 +29,7 @@ public class LapTimeEntity {
     @Column(name = "time_seconds")
     private int timeSecond;
 
-    Random random = new Random();
-    int lapTimeValue = ThreadLocalRandom.current().nextInt(80, 201); // Generate random lap time
+    int lapTimeValue = ThreadLocalRandom.current().nextInt(180, 800); // Generate random lap time
 
     public LapTimeEntity(RunnerEntity runner, RaceEntity race, int lapNumber, int timeSecond, int lapTimeValue) {
         this.runner = runner;
@@ -89,6 +88,8 @@ public class LapTimeEntity {
 
 
     public Long getId(RunnerEntity race) {return getId(race);}
+
+
 
     public static class LapTimeRequest {
         private int lapTimeSeconds;
